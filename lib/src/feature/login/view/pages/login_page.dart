@@ -51,7 +51,7 @@ class LoginPage extends StatelessWidget {
                                   formModel: FormModel(
                                       controller: controller.email,
                                       enableText: false,
-                                      hintText: "Email",
+                                      hintText: "Email".tr,
                                       invisible: false,
                                       validator: (email) =>
                                           controller.emailValid(email!),
@@ -76,7 +76,7 @@ class LoginPage extends StatelessWidget {
                                   formModel: FormModel(
                                       controller: controller.password,
                                       enableText: false,
-                                      hintText: "Password",
+                                      hintText: "Password".tr,
                                       invisible: true,
                                       validator: (password) =>
                                           controller.vaildPassword(password!),
@@ -93,8 +93,6 @@ class LoginPage extends StatelessWidget {
                           onTap: () {
                             if (formkey.currentState!.validate()) {
                               controller.onLogin();
-                              // userRepo
-                              //     .getUserDetails(controller.email.text.trim());
                             }
                           },
                           child: Container(
@@ -105,7 +103,7 @@ class LoginPage extends StatelessWidget {
                                 color: AppTheme.lightAppColors.primary),
                             child: Center(
                               child: Text(
-                                "LOGIN",
+                                "LOGIN".tr,
                                 style: TextStyle(
                                     color: AppTheme.lightAppColors.background,
                                     fontSize: 15,
@@ -119,7 +117,7 @@ class LoginPage extends StatelessWidget {
                               Get.to(RegisterPage());
                             },
                             child: Text(
-                              "Don’t have an account? Sign up  ",
+                              "Don’t have an account? Sign up  ".tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: AppTheme.lightAppColors.primary),

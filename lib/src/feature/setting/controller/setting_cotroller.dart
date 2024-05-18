@@ -56,8 +56,7 @@ class SettingController extends GetxController {
           snackPosition: SnackPosition.BOTTOM,
           colorText: AppTheme.lightAppColors.background,
           backgroundColor: Colors.green);
-      print("object");
-    } catch (e) {
+     } catch (e) {
       print(e);
     }
   }

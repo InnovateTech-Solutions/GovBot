@@ -1,23 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:web_socket_channel/status.dart' as status;
-import 'package:web_socket_channel/web_socket_channel.dart';
-
-void main() {
-  runApp(ChatbotApp());
-}
-
-class ChatbotApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Chatbot',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ChatScreen(),
-    );
-  }
-}
+import 'package:get/get.dart';
+import 'package:govbot/src/config/theme/theme.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -27,23 +11,37 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   final List<ChatMessage> _messages = [];
-  late WebSocketChannel _channel;
+  late IO.Socket _socket;
 
   @override
   void initState() {
     super.initState();
-    // Replace 'wss://your-websocket-url' with your WebSocket URL
-    _channel = WebSocketChannel.connect(Uri.parse('wss://your-websocket-url'));
-    _channel.stream.listen((data) {
+    // Connect to the WebSocket server
+    _socket = IO.io('http://127.0.0.1:5000', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+    });
+    _socket.connect();
+
+    _socket.onConnect((_) {
+      print('Connected');
+    });
+
+    _socket.on('response', (data) {
       setState(() {
-        _messages.add(ChatMessage(text: data, isUserMessage: false));
+        _messages
+            .add(ChatMessage(text: data['response'], isUserMessage: false));
       });
+    });
+
+    _socket.onDisconnect((_) {
+      print('Disconnected');
     });
   }
 
   @override
   void dispose() {
-    _channel.sink.close(status.goingAway);
+    _socket.disconnect();
     _controller.dispose();
     super.dispose();
   }
@@ -58,7 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
 
     _controller.clear();
-    _channel.sink.add(message);
+    _socket.emit('query', {'user_input': message});
   }
 
   @override
@@ -103,13 +101,31 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: TextField(
                     controller: _controller,
                     decoration: InputDecoration(
-                      hintText: 'Type your message',
+                      hintText: 'Type your message'.tr,
+                      border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: AppTheme.lightAppColors.primary),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: AppTheme.lightAppColors.primary),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: AppTheme.lightAppColors.primary),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                     onSubmitted: (text) => _sendMessage(text),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: Icon(
+                    Icons.send,
+                    color: AppTheme.lightAppColors.primary,
+                  ),
                   onPressed: () => _sendMessage(_controller.text),
                 ),
               ],

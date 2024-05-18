@@ -1,10 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
+import 'package:govbot/src/config/theme/theme.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
+  const DashboardPage({Key? key}) : super(key: key);
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -13,38 +13,54 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   final TextEditingController _controller = TextEditingController();
   final List<ChatMessage> _messages = [];
+  late IO.Socket _socket;
+  bool _isTyping = false;
 
-  Future<void> _sendMessage(String message) async {
+  @override
+  void initState() {
+    super.initState();
+    _socket = IO.io('http://127.0.0.1:5000', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+    });
+    _socket.connect();
+
+    _socket.onConnect((_) {
+      print('Connected');
+    });
+
+    _socket.on('response', (data) {
+      setState(() {
+        _isTyping = false;
+        _messages
+            .add(ChatMessage(text: data['response'], isUserMessage: false));
+      });
+    });
+
+    _socket.onDisconnect((_) {
+      print('Disconnected');
+    });
+  }
+
+  @override
+  void dispose() {
+    _socket.disconnect();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _sendMessage(String message) {
     if (message.isEmpty) {
       return;
     }
 
     setState(() {
       _messages.add(ChatMessage(text: message, isUserMessage: true));
+      _isTyping = true; // Set typing to true when sending message
     });
 
     _controller.clear();
-
-    // Simulate API call
-    final response = await http.post(
-      Uri.parse('YOUR_API_ENDPOINT'), // Replace with your API endpoint
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({'message': message}),
-    );
-
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      final botMessage = responseData['reply'] ?? 'Something went wrong.';
-
-      setState(() {
-        _messages.add(ChatMessage(text: botMessage, isUserMessage: false));
-      });
-    } else {
-      setState(() {
-        _messages.add(ChatMessage(
-            text: 'Failed to get response from API.', isUserMessage: false));
-      });
-    }
+    _socket.emit('query', {'user_input': message});
   }
 
   @override
@@ -86,13 +102,33 @@ class _DashboardPageState extends State<DashboardPage> {
                   child: TextField(
                     controller: _controller,
                     decoration: InputDecoration(
-                      hintText: 'Type your message',
+                      hintText: _isTyping
+                          ? 'Bot is typing...'.tr
+                          : 'Type your message'.tr,
+                      border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: AppTheme.lightAppColors.primary),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: AppTheme.lightAppColors.primary),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: AppTheme.lightAppColors.primary),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                     onSubmitted: (text) => _sendMessage(text),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: Icon(
+                    Icons.send,
+                    color: AppTheme.lightAppColors.primary,
+                  ),
                   onPressed: () => _sendMessage(_controller.text),
                 ),
               ],

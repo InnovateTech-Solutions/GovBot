@@ -41,7 +41,7 @@ class LoginController extends GetxController {
 
       Get.to(DashboardDrawer());
     } on FirebaseAuthException {
-      Get.snackbar("ERROR", "Email or Password is Invalid",
+      Get.snackbar("ERROR", "test",
           snackPosition: SnackPosition.BOTTOM,
           colorText: Colors.white,
           backgroundColor: Colors.red);

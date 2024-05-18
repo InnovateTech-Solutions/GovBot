@@ -51,9 +51,9 @@ class _SettingPageState extends State<SettingPage> {
                   key: controller.formkey,
                   child: Column(
                     children: [
-                      const Text(
-                        "SETTINGS",
-                        style: TextStyle(
+                      Text(
+                        "SETTINGS".tr,
+                        style: const TextStyle(
                             fontSize: 25, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(
@@ -63,7 +63,7 @@ class _SettingPageState extends State<SettingPage> {
                           formModel: FormModel(
                               controller: controller.email,
                               enableText: true,
-                              hintText: "Email",
+                              hintText: "Email".tr,
                               invisible: false,
                               validator: (email) =>
                                   controller.validEmail(email!),
@@ -77,7 +77,7 @@ class _SettingPageState extends State<SettingPage> {
                           formModel: FormModel(
                               controller: controller.name,
                               enableText: false,
-                              hintText: "Name",
+                              hintText: "Name".tr,
                               invisible: false,
                               validator: (email) =>
                                   controller.validName(email!),
@@ -91,7 +91,7 @@ class _SettingPageState extends State<SettingPage> {
                           formModel: FormModel(
                               controller: controller.phone,
                               enableText: false,
-                              hintText: "Phone",
+                              hintText: "Phone".tr,
                               invisible: false,
                               validator: (email) =>
                                   controller.vaildPhoneNumber(email!),
@@ -118,7 +118,7 @@ class _SettingPageState extends State<SettingPage> {
                               color: AppTheme.lightAppColors.primary),
                           child: Center(
                             child: Text(
-                              "UPDATE",
+                              "UPDATE".tr,
                               style: TextStyle(
                                   color: AppTheme.lightAppColors.background,
                                   fontSize: 15,

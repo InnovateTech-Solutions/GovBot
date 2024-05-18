@@ -44,7 +44,7 @@ class RegisterPage extends StatelessWidget {
                             formModel: FormModel(
                                 controller: controller.email,
                                 enableText: false,
-                                hintText: "Email",
+                                hintText: "Email".tr,
                                 invisible: false,
                                 validator: (email) =>
                                     controller.validEmail(email!),
@@ -58,7 +58,7 @@ class RegisterPage extends StatelessWidget {
                             formModel: FormModel(
                                 controller: controller.name,
                                 enableText: false,
-                                hintText: "Name",
+                                hintText: "Name".tr,
                                 invisible: false,
                                 validator: (email) =>
                                     controller.validName(email!),
@@ -72,7 +72,7 @@ class RegisterPage extends StatelessWidget {
                             formModel: FormModel(
                                 controller: controller.phone,
                                 enableText: false,
-                                hintText: "Phone",
+                                hintText: "Phone".tr,
                                 invisible: false,
                                 validator: (email) =>
                                     controller.vaildPhoneNumber(email!),
@@ -89,7 +89,7 @@ class RegisterPage extends StatelessWidget {
                             formModel: FormModel(
                                 controller: controller.password,
                                 enableText: false,
-                                hintText: "Password",
+                                hintText: "Password".tr,
                                 invisible: true,
                                 validator: (password) =>
                                     controller.vaildatePassword(password!),
@@ -108,7 +108,6 @@ class RegisterPage extends StatelessWidget {
                                   password: controller.password.text.trim(),
                                   imageUrl: '',
                                   phone: controller.phone.text.trim()));
-                              //  UserController.instance.logIn();
                             } else {}
                           },
                           child: Container(
@@ -119,7 +118,7 @@ class RegisterPage extends StatelessWidget {
                                 color: AppTheme.lightAppColors.primary),
                             child: Center(
                               child: Text(
-                                "Register",
+                                "Register".tr,
                                 style: TextStyle(
                                     color: AppTheme.lightAppColors.background,
                                     fontSize: 15,
@@ -133,7 +132,7 @@ class RegisterPage extends StatelessWidget {
                               Get.to(LoginPage());
                             },
                             child: Text(
-                              "Have Account ? Login ",
+                              "Have Account ? Login ".tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: AppTheme.lightAppColors.primary),
