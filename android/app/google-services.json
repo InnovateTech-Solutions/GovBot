@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "231515510914",
+    "project_id": "govbo-e682a",
+    "storage_bucket": "govbo-e682a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:231515510914:android:149884dda74f7485e37c9b",
+        "android_client_info": {
+          "package_name": "com.example.govbot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTDb6dFjtLNoBCR1ijCNI3cTPY3-F1r3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
