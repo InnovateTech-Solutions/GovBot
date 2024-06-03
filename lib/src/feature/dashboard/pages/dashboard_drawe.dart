@@ -9,6 +9,7 @@ import 'package:govbot/src/config/theme/theme.dart';
 import 'package:govbot/src/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:govbot/src/feature/dashboard/pages/dashboard_page.dart';
 import 'package:govbot/src/feature/login/view/pages/login_page.dart';
+import 'package:govbot/src/feature/post/view/widget/post_page.dart';
 import 'package:govbot/src/feature/setting/view/setting_page.dart';
 
 class DashboardDrawer extends StatelessWidget {
@@ -18,8 +19,8 @@ class DashboardDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final _auth = FirebaseAuth.instance;
     final translateController = Get.put(localizationController());
-
     final controller = Get.put(DashboardController());
+
     return Scaffold(
       body: Row(
         children: [
@@ -38,13 +39,16 @@ class DashboardDrawer extends StatelessWidget {
                 const SizedBox(
                   height: 60,
                 ),
-                drawerButton("New Chat".tr, Icons.message, () {
+                drawerButton(controller, "New Chat".tr, Icons.message, 0, () {
                   controller.pageValue.value = 0;
                 }),
                 const SizedBox(
                   height: 20,
                 ),
-                drawerButton("Language".tr, Icons.translate, () {
+                drawerButton(controller, "Post".tr, Icons.post_add, 1, () {
+                  controller.pageValue.value = 1;
+                }),
+                drawerButton(controller, "Language".tr, Icons.translate, 2, () {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -74,13 +78,13 @@ class DashboardDrawer extends StatelessWidget {
                   );
                 }),
                 const Spacer(),
-                drawerButton("Profile".tr, Icons.person, () {
-                  controller.pageValue.value = 2;
+                drawerButton(controller, "Profile".tr, Icons.person, 3, () {
+                  controller.pageValue.value = 3;
                 }),
                 const SizedBox(
-                  height: 60,
+                  height: 20,
                 ),
-                drawerButton("Logout".tr, Icons.login, () async {
+                drawerButton(controller, "Logout".tr, Icons.login, 4, () async {
                   await _auth.signOut();
                   Get.to(const LoginPage());
                 }),
@@ -92,35 +96,65 @@ class DashboardDrawer extends StatelessWidget {
               height: context.screenHeight,
               width: context.screenWidth * 0.85,
               color: const Color.fromARGB(255, 241, 242, 248),
-              child: controller.pageValue.value == 0
-                  ? const DashboardPage()
-                  : SettingPage()))
+              child: getPage(controller.pageValue.value))),
         ],
       ),
     );
   }
 
-  drawerButton(title, icon, VoidCallback onTap) {
+  Widget getPage(int index) {
+    switch (index) {
+      case 0:
+        return const DashboardPage();
+      case 2:
+        // Assuming you have a different page for Language settings
+        return const DashboardPage();
+      case 3:
+        return const SettingPage();
+      case 1:
+        return const PostPage();
+      default:
+        return const DashboardPage();
+    }
+  }
+
+  Widget drawerButton(DashboardController drawerController, String title,
+      IconData icon, int index, VoidCallback onTap) {
     return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            color: AppTheme.lightAppColors.background,
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          Text(title,
-              style: GoogleFonts.poppins(
-                textStyle: TextStyle(
-                    color: AppTheme.lightAppColors.background,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600),
-              ))
-        ],
-      ),
+      onTap: () {
+        drawerController.setActiveButton(index);
+        onTap();
+      },
+      child: Obx(() => Container(
+            decoration: BoxDecoration(
+              color: drawerController.activeButtonIndex.value == index
+                  ? Color.fromARGB(255, 12, 119, 39)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  color: AppTheme.lightAppColors.background,
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  title,
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                      color: AppTheme.lightAppColors.background,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )),
     );
   }
 }

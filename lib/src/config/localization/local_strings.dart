@@ -25,7 +25,10 @@ class LocalStrings extends Translations {
           "Choose a Language": "Choose a Language",
           'Arabic': 'Arabic',
           'English': 'English',
-          "Bot is typing...": "Bot is typing..."
+          "Bot is typing...": "Bot is typing...",
+          "Hello": "Hello",
+          "Post": "Post",
+          "Write Your Post": "Write Your Post"
         },
         'ar_SA': {
           "Profile": "الملف الشخصي",
@@ -47,7 +50,10 @@ class LocalStrings extends Translations {
           "Choose a Language": "اختر لغة",
           "Arabic": "العربية",
           "English": "الإنجليزية",
-          "Bot is typing...": "البوت يكتب..."
+          "Bot is typing...": "البوت يكتب...",
+          "Hello": "اهلا",
+          "Post": "منشور",
+          "Write Your Post": "اكتب منشورك"
         }
       };
 }
