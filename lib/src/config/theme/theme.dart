@@ -10,7 +10,7 @@ class AppTheme {
   );
 
   static final lightAppColors = AppColorsExtension(
-    primary: const Color(0xff179537), //
+    primary: const Color(0xffF7941F), //
     background: const Color(0xffffffff), //
     maincolor: const Color(0xff000000), //
     bordercolor: const Color(0xffA9ACBB),

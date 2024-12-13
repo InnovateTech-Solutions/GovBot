@@ -27,7 +27,7 @@ class LocalStrings extends Translations {
           'English': 'English',
           "Bot is typing...": "Bot is typing...",
           "Hello": "Hello",
-          "Post": "Post",
+          "User Reports": "User Reports",
           "Write Your Post": "Write Your Post"
         },
         'ar_SA': {
@@ -52,8 +52,16 @@ class LocalStrings extends Translations {
           "English": "الإنجليزية",
           "Bot is typing...": "البوت يكتب...",
           "Hello": "اهلا",
-          "Post": "منشور",
-          "Write Your Post": "اكتب منشورك"
+          "User Reports": "البلاغات",
+          "History": "سجل البحث",
+          "Fact Check": "تحقق من معلومة",
+          "Validate Statement":"تأكد من صحة المعلومات",
+          "Add New Report": "إضافة بلاغ جديد",
+          "Title":"العنوان",
+          "Description": "تفاصيل",
+          "Cancel": "إلغاء",
+          "Submit": "إرسال",
+          "Checking...": "جاري التحقق...",
         }
       };
 }

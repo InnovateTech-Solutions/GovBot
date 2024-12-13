@@ -1,20 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:govbot/firebase_options.dart';
 import 'package:govbot/src/config/localization/local_strings.dart';
 import 'package:govbot/src/config/localization/locale_constant.dart';
 import 'package:govbot/src/config/theme/theme.dart';
-import 'package:govbot/src/core/auth_repo/auth_repo.dart';
-import 'package:govbot/src/feature/login/view/pages/auth_wrapper.dart';
+
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-      .then((value) => Get.put(AuthenticationRepository()));
-  FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
-
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure bindings are initialized before running app
   runApp(const MyApp());
 }
 
@@ -26,12 +18,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final controller = Get.put(localizationController());
+  final controller = Get.put(localizationController()); // Instantiate the controller
 
   @override
   void initState() {
     super.initState();
-    controller.loadLanguage();
+    // No need to call loadLanguage() and loadToken here because they're already called in the controller's onInit.
   }
 
   @override
@@ -41,7 +33,8 @@ class _MyAppState extends State<MyApp> {
       locale: const Locale('en', 'US'),
       translations: LocalStrings(),
       debugShowCheckedModeBanner: false,
-      home: AuthWrapper(),
+      // Set initial route to null, since we want the controller to handle the navigation
+      home: Container(), // Empty container as controller will navigate
     );
   }
 }
